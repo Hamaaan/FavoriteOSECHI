@@ -7,25 +7,170 @@
     <style>
       body {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
         margin: 0;
+        /* background-color: #f7e1a0; 正月っぽい背景色 */
         background-color: #ffffff;
+        font-family: "Arial", sans-serif;
       }
       video {
-        max-width: 100%;
-        max-height: 100%;
+        max-width: 90%;
+        margin-bottom: 20px;
+        border: 5px solid #e63946; /* おめでたい赤の枠線 */
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* モダンな影 */
+      }
+      h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #e63946; /* 正月らしい赤 */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        margin-bottom: 20px;
+        margin-inline: 20px;
+      }
+      input {
+        text-align: center;
+        width: 80%; /* 入力欄を広くする */
+        padding: 15px;
+        font-size: 1.2rem;
+        border: 2px solid #457b9d; /* モダンな青の枠線 */
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        margin-bottom: 20px; /* センタリング調整 */
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: white;
+        background-color: #e63946; /* おめでたい赤 */
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s;
+      }
+      button:hover {
+        transform: scale(1.1);
+      }
+      .snake {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end; /* 右側にスネークを配置 */
+        margin: 20px;
+        width: 80%;
+      }
+      .snake img {
+        width: 100px;
+        height: auto;
+      }
+      #announcement {
+        position: absolute;
+        bottom: 10px; /* キャラクターの上に吹き出しを表示 */
+        right: 140px;
+        transform: translateY(0) scale(0);
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #333333; /* モダンな緑 */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        background: #fff; /* 吹き出しの背景色 */
+        border: 3px solid #313131;
+        border-radius: 10px;
+        padding: 30px;
+        /* width: 300%; */
+        display: none;
+        animation: popUp 0.5s ease-out forwards,
+          fadeOut 2s ease-in-out 1.5s forwards;
+      }
+      #announcement span {
+        display: block;
+      }
+      @keyframes popUp {
+        0% {
+          transform: translateY(0) scale(0);
+        }
+        100% {
+          transform: translateY(-10px) scale(1);
+        }
+      }
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
       }
     </style>
   </head>
   <body>
-    <video id="myVideo" controls>
+    <video id="myVideo" controls poster="thumbnail-image.png">
       <source src="your-video-file.mp4" type="video/mp4" />
       お使いのブラウザは動画再生に対応していません。
     </video>
+    <h1>あなたの好きなおせちを発表してみよう！</h1>
+    <div class="snake">
+      <div id="announcement"></div>
+      <img src="snake-character.png" alt="発表スネーク" />
+    </div>
+    <input
+      id="osechiInput"
+      type="text"
+      placeholder="好きなおせちを入力してください"
+    />
+    <button id="submitButton">発表する</button>
 
     <script>
+      const speakAndPlay = (text) => {
+        // 1. テキストを読み上げる
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "ja-JP"; // 日本語対応
+        utterance.voice = speechSynthesis
+          .getVoices()
+          .find((voice) => voice.lang === "ja-JP"); // 日本語音声を選択
+
+        // 読み上げ中の待機時間を調整
+        utterance.rate = 1.2; // 速さを少し速くする
+
+        // 読み上げ終了後に "だいすき" の音声を再生
+        utterance.onend = () => {
+          setTimeout(() => {
+            const daisukiAudio = new Audio("daisuki.mp3");
+            daisukiAudio.play().catch((error) => {
+              console.error("音声再生に失敗しました:", error);
+            });
+          }, 0);
+        };
+
+        // 読み上げ開始
+        speechSynthesis.speak(utterance);
+
+        // 発表スネークの吹き出しに表示
+        const announcement = document.getElementById("announcement");
+        announcement.innerHTML = `<span>${text}</span><span>大好き！</span>`;
+        announcement.style.display = "block";
+
+        // 4秒後に非表示
+        setTimeout(() => {
+          announcement.style.display = "none";
+        }, 4000);
+      };
+
+      document.getElementById("submitButton").addEventListener("click", () => {
+        const osechi = document.getElementById("osechiInput").value.trim();
+        if (osechi) {
+          speakAndPlay(`${osechi}`);
+        } else {
+          alert("好きなおせちを入力してください！");
+        }
+      });
+
+      // 動画を自動再生（1秒後）
       window.addEventListener("load", () => {
         setTimeout(() => {
           const video = document.getElementById("myVideo");
@@ -34,7 +179,7 @@
               console.error("自動再生に失敗しました:", error);
             });
           }
-        }, 1000); // 1秒後に再生
+        }, 1000);
       });
     </script>
   </body>
