@@ -10,8 +10,8 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        height: 100vh;
-        margin: 0;
+        margin-inline: 0;
+        margin-block: 30px;
         /* background-color: #f7e1a0; 正月っぽい背景色 */
         background-color: #ffffff;
         font-family: "Arial", sans-serif;
@@ -107,9 +107,22 @@
           opacity: 0;
         }
       }
+      .hanko {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hanko img {
+        max-width: 10%;
+        margin-block: 10px;
+      }
     </style>
   </head>
   <body>
+    <div class="hanko">
+      <img src="hanko_gashou_illust_2108.png" />
+    </div>
+
     <video id="myVideo" controls poster="thumbnail-image.png">
       <source src="your-video-file.mp4" type="video/mp4" />
       お使いのブラウザは動画再生に対応していません。
@@ -125,6 +138,15 @@
       placeholder="好きなおせちを入力してください"
     />
     <button id="submitButton">発表する</button>
+    <br />
+    本コンテンツは音声が流れます。
+    <br />
+    TPOをわきまえて発表してください。
+    <br />
+    <div class="hanko">
+      <img src="hanko_eto_mi_illust_3748.png" />
+    </div>
+    <br />
 
     <script>
       const speakAndPlay = (text) => {
