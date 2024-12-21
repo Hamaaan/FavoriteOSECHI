@@ -12,12 +12,12 @@
         align-items: center;
         margin-inline: 0;
         margin-block: 30px;
-        /* background-color: #f7e1a0; 正月っぽい背景色 */
         background-color: #ffffff;
         font-family: "Arial", sans-serif;
       }
       video {
-        max-width: 90%;
+        width: 90%;
+        max-width: 800px;
         margin-bottom: 20px;
         border: 5px solid #e63946; /* おめでたい赤の枠線 */
         border-radius: 10px;
@@ -33,7 +33,8 @@
       }
       input {
         text-align: center;
-        width: 80%; /* 入力欄を広くする */
+        width: 80%;
+        max-width: 800px;
         padding: 15px;
         font-size: 1.2rem;
         border: 2px solid #457b9d; /* モダンな青の枠線 */
@@ -64,6 +65,7 @@
         margin-inline: 30px;
         margin-block: 40px;
         width: 80%;
+        max-width: 400px;
       }
       .snake img {
         width: 100px;
@@ -138,11 +140,21 @@
       placeholder="好きなおせちを入力してください"
     />
     <button id="submitButton">発表する</button>
-    <br />
-    本コンテンツは音声が流れます。
-    <br />
-    TPOをわきまえて発表してください。
-    <br />
+    <div style="text-align: center; color: #457b9d">
+      <br />
+      本コンテンツは音声が流れます。
+      <br />
+      TPOをわきまえて発表してください。
+      <br />
+      素晴らしき本家様：<a
+        href="https://www.youtube.com/watch?v=OnCFEo_pXaY&t=0s&ab_channel=%E3%83%B3%E3%83%90%E3%83%82%2Fnbaji"
+        >好きな惣菜発表ドラゴン / 重音テト</a
+      >
+      <br />
+      これをつくったひと：はまーん
+      <br />
+    </div>
+
     <div class="hanko">
       <img src="hanko_eto_mi_illust_3748.png" />
     </div>
